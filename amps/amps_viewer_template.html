@@ -1,4 +1,4 @@
-<title>RINGS Enderby Meteograms</title>
+<title>DML/EL RINGS Meteograms</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -164,16 +164,16 @@ footer { font-size: 0.82rem; color: var(--muted); }
 
 <div class="wrap">
   <header>
-    <h1>RINGS Enderby Meteograms</h1>
+    <h1>DML/EL RINGS Meteograms</h1>
     <div class="hdr-right">
-      <span class="sub">Enderby Land, S17 to E4 &middot; AMPS WRF 8&nbsp;km forecasts, 5 days</span>
+      <span class="sub">Dronning Maud Land and Enderby Land, PEA to E4 &middot; AMPS WRF 8&nbsp;km forecasts, 5 days</span>
       <button class="theme" id="theme" type="button" title="Colour theme: follow the device, light or dark">Theme: auto</button>
     </div>
   </header>
 
   <p class="warnbox"><strong>Model output, not a forecast. These charts and notes are made automatically from the AMPS
-  weather model, with no forecaster involved. They were first set up for a ground traverse in Dronning Maud Land and have not been
-  adapted to Enderby Land or to flying; the wind-aloft numbers are shown as the model gives them, without interpretation.
+  weather model, with no forecaster involved. They were first set up for a ground traverse near Maitri in Dronning Maud Land.
+  They are not tuned for this region or for flying. The wind-aloft numbers are the model's, without interpretation.
   For flight decisions use the official forecast and the station forecaster.</strong></p>
 
   <div class="top">
@@ -191,15 +191,15 @@ footer { font-size: 0.82rem; color: var(--muted); }
         title="Same point on meteoblue (global models, coarser than AMPS; heavy page over Starlink)">compare on meteoblue &#8599;</a></span>
     </div>
     <details class="map" id="mapbox">
-      <summary>Site map <span class="hint">where the five sites are, their elevation and distance to the sea</span></summary>
+      <summary>Site map <span class="hint">where the seven sites are, their elevation and distance to the sea</span></summary>
       <div class="mapframe" id="mapframe">
-        <img src="__MAP_SRC__" alt="Map of the Enderby Land coast from Syowa to 57E with the five meteogram sites on the MODIS mosaic" width="960" height="566">
+        <img src="__MAP_SRC__" alt="Map of the Dronning Maud Land and Enderby Land coast from Princess Elisabeth to 57E with the seven meteogram sites on the MODIS mosaic" width="960" height="406">
       </div>
       <p class="maplegend"><span class="sw" style="background:#ff6b6b"></span>coast and ice front &middot;
         <span class="sw" style="background:#74c0fc"></span>grounding line (Bedmap3) &middot;
         white squares: Syowa and Molodezhnaya stations, used for the check against reports &middot;
-        + AMPS 8&nbsp;km grid node; the ring marks the node each meteogram is read from. Map 829&nbsp;&times;&nbsp;489&nbsp;km on the MODIS Mosaic of Antarctica (2009);
-        the sea is at the top and true north points up and to the right. E4 is 22&nbsp;km west of the requested 66.5&deg;S 57&deg;E, whose grid node is at the coast.</p>
+        + AMPS 8&nbsp;km grid node; the ring marks the node each meteogram is read from. Map 1515&nbsp;&times;&nbsp;640&nbsp;km on the MODIS Mosaic of Antarctica (2009);
+        the sea is at the top and true north points up and to the right. E4 is 22&nbsp;km west of the requested 66.5&deg;S 57&deg;E, whose grid node is at the coast. W1 lies on a floating ice shelf.</p>
       <table class="sitetab" id="sitetab" hidden>
         <thead><tr><th>Site</th><th class="n">Elevation</th><th class="n">To the sea</th></tr></thead>
         <tbody></tbody>
@@ -225,7 +225,7 @@ footer { font-size: 0.82rem; color: var(--muted); }
       <div class="foldbody"><div class="days" id="g-days"></div></div>
     </details>
     <p class="disclaimer" id="g-disc"></p>
-    <p class="disclaimer"><a class="mb" href="https://github.com/vikramonice/rings-enderby-weather/blob/main/RULES.md" target="_blank" rel="noopener">How these notes are written: every rule, with sources &#8599;</a></p>
+    <p class="disclaimer"><a class="mb" href="https://github.com/vikramonice/dml-el-rings-weather/blob/main/RULES.md" target="_blank" rel="noopener">How these notes are written: every rule, with sources &#8599;</a></p>
   </section>
 
   <section class="verify" id="verify-box" aria-labelledby="v-title" hidden>
@@ -260,7 +260,7 @@ footer { font-size: 0.82rem; color: var(--muted); }
     <div><h2>Cloud and snow</h2><p>Grey: layers where the air is saturated over ice, so cloud is likely, by altitude (right scale). Orange ticks: model cloud base. Blue bars: snowfall as mm of water per 3&nbsp;h (about 1&nbsp;cm of fresh snow per mm).</p></div>
     <div><h2>Wind aloft</h2><p>Bottom panel: AMPS wind at 850, 700 and 500&nbsp;hPa every 6&nbsp;h, arrow for direction (where it blows to) and number for speed in knots; the label gives the model's height of each level above sea level. Shown as the model gives it, without interpretation.</p></div>
     <div><h2>Wind</h2><p>Speed at 10&nbsp;m in m/s (left) and knots (right). Arrows point where the wind blows to; letters give where it comes from. Dashed lines mark strong (10&nbsp;m/s) and gale (15&nbsp;m/s). AMPS publishes no gusts.</p></div>
-    <div><h2>Field weather notes</h2><p>The meteogram in words, written automatically by fixed rules from the AMPS numbers, not by a forecaster. The thresholds come from the <i>International Antarctic Weather Forecasting Handbook</i> (Turner &amp; Pendlebury 2004) and were set for a ground traverse in Dronning Maud Land; the rules specific to that region are switched off here. <b>Not adapted to Enderby Land or to flying.</b> Amber: drifting snow (mean wind 20&nbsp;kt or more, 14&nbsp;kt on fresh snow), snow of 0.5&nbsp;mm or more, thick low cloud (poor contrast and horizon), or pressure falling fast. Red: blowing snow (35&nbsp;kt or more) or whiteout risk (thick cloud with snow or drift). &ldquo;Last run&rdquo; compares the day with the previous AMPS run: a hazard seen in both runs is more trustworthy than one that just appeared.</p></div>
+    <div><h2>Field weather notes</h2><p>The meteogram in words, written automatically by fixed rules from the AMPS numbers, not by a forecaster. The thresholds come from the <i>International Antarctic Weather Forecasting Handbook</i> (Turner &amp; Pendlebury 2004) and were set for a ground traverse in Dronning Maud Land; the rules specific to that region are switched off here. <b>Not tuned for this region or for flying.</b> Amber: drifting snow (mean wind 20&nbsp;kt or more, 14&nbsp;kt on fresh snow), snow of 0.5&nbsp;mm or more, thick low cloud (poor contrast and horizon), or pressure falling fast. Red: blowing snow (35&nbsp;kt or more) or whiteout risk (thick cloud with snow or drift). &ldquo;Last run&rdquo; compares the day with the previous AMPS run: a hazard seen in both runs is more trustworthy than one that just appeared.</p></div>
     <div><h2>AMPS against the station reports</h2><p>Every update compares what this page showed at Syowa's grid point with the 3-hourly Syowa reports, and keeps the Molodezhnaya reports alongside. The bias tells you how to read the meteogram: for example, if AMPS has run 2&nbsp;°C too cold at night, expect nights about 2&nbsp;°C warmer than shown. It builds up through the season.</p></div>
     <div><h2>Pressure</h2><p>Sea-level pressure. Red shading marks a fall of 4&nbsp;hPa or more in 12&nbsp;h, often the first sign of a storm or rising wind.</p></div>
   </section>
@@ -275,13 +275,13 @@ footer { font-size: 0.82rem; color: var(--muted); }
           <span class="when">new runs at 00 and 12 UTC, online about 10 h later</span></div></li>
         <li><span class="ic" aria-hidden="true">&#9201;</span><div><h3>2. An automatic job collects it</h3>
           <p>Every 30 minutes while a new run is due, a small program on GitHub checks for it and downloads only the numbers for the grid point
-          nearest each of the five sites, and for Syowa station (a few hundred kB, not the gigabytes of the full model).</p>
+          nearest each of the seven sites, and for Syowa station (a few hundred kB, not the gigabytes of the full model).</p>
           <span class="when">every 30 min, 09:00&ndash;12:00 and 21:00&ndash;00:30 UTC; new runs appear within about half an hour</span></div></li>
         <li><span class="ic" aria-hidden="true">&#128200;</span><div><h3>3. Charts and field weather notes</h3>
           <p>For each site it draws the meteogram (temperature, cloud, snow, wind, pressure) and writes the field weather notes (the meteogram in words) by fixed rules
-          from the <i>Antarctic Weather Forecasting Handbook</i>: drifting snow, whiteout risk, falling pressure (set for a ground traverse in Dronning Maud Land; not adapted to Enderby Land or to flying).
+          from the <i>Antarctic Weather Forecasting Handbook</i>: drifting snow, whiteout risk, falling pressure (set for a ground traverse near Maitri; not tuned for this region or for flying).
           It also compares each day with the previous run: a hazard seen in both runs is more trustworthy.
-          <a class="mb" href="https://github.com/vikramonice/rings-enderby-weather/blob/main/RULES.md" target="_blank" rel="noopener">Every rule, its source and a worked example &#8599;</a></p></div></li>
+          <a class="mb" href="https://github.com/vikramonice/dml-el-rings-weather/blob/main/RULES.md" target="_blank" rel="noopener">Every rule, its source and a worked example &#8599;</a></p></div></li>
         <li><span class="ic" aria-hidden="true">&#128269;</span><div><h3>4. A check against real weather</h3>
           <p>It fetches the reports from Syowa and Molodezhnaya stations (via Ogimet) and compares Syowa with what AMPS
           forecast, so you can see how far to trust it, for example "AMPS runs about 3&nbsp;&deg;C too cold".</p></div></li>

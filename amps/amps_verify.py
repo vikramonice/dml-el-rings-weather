@@ -1,10 +1,10 @@
 """
 amps_verify.py
 ==============
-Checks the AMPS forecasts on the "RINGS Enderby Meteograms" page against what the stations reported.
+Checks the AMPS forecasts on the "DML/EL RINGS Meteograms" page against what the stations reported.
 With no forecaster in the loop this is how we learn how far to trust AMPS here.
 
-RINGS Enderby copy: Syowa (WMO 89532, hourly) against AMPS at Syowa's own grid point (fetched for this
+DML/EL RINGS copy: Syowa (WMO 89532, hourly) against AMPS at Syowa's own grid point (fetched for this
 check only; the cell is sea, the station on East Ongul Island), and Molodezhnaya (89542, near E1) as
 reports only. No katabatic tally: those thresholds were Maitri's.
 Observations: SYNOP reports from Ogimet (https://www.ogimet.com, free, one request per
@@ -55,7 +55,7 @@ def fetch_synop(block, begin, end):
         try:
             r = requests.get(OGIMET, params=dict(block=block, begin=begin.strftime("%Y%m%d%H%M"),
                                                  end=end.strftime("%Y%m%d%H%M")), timeout=60, verify=ca_bundle(),
-                             headers={"User-Agent": "RINGS-Enderby-meteograms (research field forecasts)"})
+                             headers={"User-Agent": "DML-EL-RINGS-meteograms (research field forecasts)"})
             if r.ok and r.text.startswith(block):
                 return r.text.splitlines()
             if r.ok:

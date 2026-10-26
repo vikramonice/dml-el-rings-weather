@@ -33,7 +33,7 @@ MAP_SRC = os.environ.get("AMPS_MAP_SRC", "/_blob/6b9da01cf3da5a52adb149e87a5a49e
 MAP_JSON = _HERE / "amps_sites_map_web.json"           # site positions on that image (amps_site_map.py)
 KEEP = 8                                   # runs kept in the viewer (4 days at 2 runs/day)
 # along the route, Maitri to MN_04 (also the numbering on the site map)
-ORDER = ["s17", "e1", "e2", "e3", "e4"]          # west to east, as the flights go from Syowa
+ORDER = ["pea", "w1", "s17", "e1", "e2", "e3", "e4"]          # west to east, as the flights go from Syowa
 
 
 def load():

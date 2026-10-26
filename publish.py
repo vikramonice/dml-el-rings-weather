@@ -1,7 +1,7 @@
 """
 publish.py
 ==========
-One update of the RINGS Enderby Meteograms site (GitHub Pages, branch gh-pages).
+One update of the DML/EL RINGS Meteograms site (GitHub Pages, branch gh-pages).
 
 The site folder (a checkout of gh-pages) holds the published page and the state the next run
 needs: viewer_manifest.json (the last 8 runs, each with its CSV and guidance) and verify.json

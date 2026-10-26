@@ -1,31 +1,33 @@
-# RINGS Enderby Meteograms
+# DML/EL RINGS Meteograms
 
-Five-day weather model output for the RINGS airborne survey in Enderby Land (East Antarctica), from
+Five-day weather model output for the RINGS airborne surveys in Dronning Maud Land and Enderby Land (East Antarctica), from
 the Antarctic Mesoscale Prediction System (AMPS, NCAR; WRF 8 km). A copy of the
 [MINIS Meteograms](https://github.com/vikramonice/minis-weather) site, set up on 26 October 2026.
 
-**Site:** https://vikramonice.github.io/rings-enderby-weather/
+**Site:** https://vikramonice.github.io/dml-el-rings-weather/
 
 **Model output, not a forecast.** The charts and notes are made automatically, with no forecaster
-involved. They were first set up for a ground traverse in Dronning Maud Land and have not been
-adapted to Enderby Land or to flying. The wind-aloft numbers are shown as the model gives them,
+involved. They were first set up for a ground traverse near Maitri in Dronning Maud Land. They are
+not tuned for this region or for flying. The wind-aloft numbers are shown as the model gives them,
 without interpretation. For flight decisions use the official forecast and the station forecaster.
 
-## Sites (west to east, as the flights go from Syowa)
+## Sites (west to east)
 
 | Site | Position | AMPS grid point | Note |
 |---|---|---|---|
+| PEA (Princess Elisabeth) | 71.950 S, 23.347 E | 3.6 km, model ground 1276 m | added 26 Oct 2026 |
+| W1 | 69.5 S, 31.0 E | 2.5 km, 34 m | floating ice shelf (Bedmap3: 249 m of ice); added 26 Oct 2026 |
 | S17 (skiway near Syowa) | 69.03 S, 40.09 E | 1.0 km, model ground 592 m | reference near the start of the flights |
 | E1 | 68.0 S, 45.0 E | 4.7 km, ~500 m | |
 | E2 | 67.5 S, 49.0 E | 1.6 km, ~410 m | |
 | E3 | 66.0 S, 53.0 E | 4.0 km, ~360 m | |
 | E4 | 66.5 S, 56.5 E | 4.2 km, ~350 m | 22 km west of the requested 66.5 S, 57 E, whose grid point is at the coast (60 m) |
 
-The positions may change; each site keeps its file name (`s17`, `e1` ... `e4`) so its history
+The positions may change; each site keeps its file name (`pea`, `w1`, `s17`, `e1` ... `e4`) so its history
 continues. Sites are set in `SITES` at the top of [`amps/amps_meteogram.py`](amps/amps_meteogram.py).
 
-Each meteogram shows temperature and wind chill, cloud by altitude and cloud base, snowfall, 10 m
-wind, sea-level pressure, and **wind aloft at 850, 700 and 500 hPa** (arrows and knots, every 6 h).
+Each meteogram shows temperature and wind chill, cloud by altitude and cloud base, snowfall, wind at
+10 m, sea-level pressure, and **wind aloft at 850, 700 and 500 hPa** (arrows and knots, every 6 h).
 
 **Station check:** Syowa (WMO 89532) reports every 3 h are compared with AMPS at Syowa's own grid
 point (fetched for the check only; the cell is sea, the station is on an island). Molodezhnaya

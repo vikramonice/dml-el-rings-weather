@@ -1,7 +1,7 @@
 """
 amps_summary.py
 ===============
-Plain-language MODEL GUIDANCE for each RINGS Enderby site, day by day, written by fixed rules from the
+Plain-language MODEL GUIDANCE for each DML/EL RINGS site, day by day, written by fixed rules from the
 AMPS point forecast (amps_meteogram.py). AMPS only: it is the model tuned for Antarctica
 (Polar WRF, 8 km), and the product stays with it.
 
@@ -52,7 +52,7 @@ CONST = dict(drift=10.0, drift_fresh=7.0, blow=18.0, fresh_mm=0.5, snow=0.5, sno
              rhi_cloud=95.0, thick=1500.0, pfall=4.0, prise=4.0, warm=5.0,
              same_wind=3.0)          # run-to-run: daily max wind within 3 m/s (6 kt) = consistent
 DIR8 = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
-# RINGS Enderby copy: the site-type and weather-pattern rules come from the handbook sections for
+# DML/EL RINGS copy: the site-type and weather-pattern rules come from the handbook sections for
 # Maitri, Novolazarevskaya and Dakshin Gangotri (Dronning Maud Land) and are switched off here; the
 # generic thresholds (drift, blowing snow, snowfall, low cloud, pressure falls) are kept.
 SHELF, KATABATIC = set(), set()
@@ -275,8 +275,8 @@ def summarise(cycle, slug, start):
     return dict(cycle=cycle, site=slug, made=start.strftime("%Y-%m-%d %H:%M"), headline=head, site_note=note,
                 days=days,
                 disclaimer="Written automatically by fixed rules from the AMPS numbers, not by a forecaster. The rules were "
-                           "written for the MINIS ground traverse in Dronning Maud Land and have not been adapted to Enderby "
-                           "Land or to flying. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
+                           "written for the MINIS ground traverse near Maitri (Dronning Maud Land). They are not tuned for "
+                           "this region or for flying. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
                            "and what the station forecaster says over the model.")
 
 

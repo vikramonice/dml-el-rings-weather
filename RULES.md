@@ -1,11 +1,11 @@
 # How the field weather notes are written
 
-> **RINGS Enderby copy.** This page was written for the MINIS ground traverse in Dronning Maud Land
+> **DML/EL RINGS copy.** This page was written for the MINIS ground traverse in Dronning Maud Land
 > and is kept unchanged as the record of the rules. On the
-> [RINGS Enderby page](https://vikramonice.github.io/rings-enderby-weather/) the **weather-pattern
+> [DML/EL RINGS page](https://vikramonice.github.io/dml-el-rings-weather/) the **weather-pattern
 > rules** (wind-direction patterns and the site notes from the Maitri / Dakshin Gangotri section)
 > are **switched off**; the general thresholds (drifting and blowing snow, snowfall, low cloud and
-> contrast, pressure changes) are used as written. None of it has been adapted to Enderby Land or to
+> contrast, pressure changes) are used as written. None of it is tuned for this region or for
 > flying. The wind-aloft panel has no rules: it shows the AMPS numbers only. The station check uses
 > Syowa (89532) and Molodezhnaya (89542) instead of Maitri and Novolazarevskaya.
 

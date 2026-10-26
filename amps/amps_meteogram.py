@@ -1,8 +1,8 @@
 """
 amps_meteogram.py
 =================
-AMPS (Antarctic Mesoscale Prediction System, NCAR) meteograms for the RINGS Enderby Land survey:
-S17 (skiway near Syowa) and points E1-E4, numbered eastwards along the planned flights.
+AMPS (Antarctic Mesoscale Prediction System, NCAR) meteograms for the RINGS surveys in Dronning Maud Land and
+Enderby Land (DML/EL): PEA, W1, S17 (skiway near Syowa) and points E1-E4, west to east.
 Copied from the MINIS meteogram site (vikramonice/minis-weather) on 26 Oct 2026.
 
 AMPS publishes the WRF output as GRIB1 at https://www2.mmm.ucar.edu/rt/amps/wrf_grib/<cycle>/
@@ -49,20 +49,22 @@ CACHE = OUT / "grid_cache"
 URL = "https://www2.mmm.ucar.edu/rt/amps/wrf_grib/"
 DOMAIN = "d2"                         # 8 km Antarctic grid
 HOURS = list(range(0, 121, 3))
-SITE_URL = "https://vikramonice.github.io/rings-enderby-weather/"      # printed on every chart
-UA = {"User-Agent": "RINGS-Enderby-meteogram (research; python-requests)"}
+SITE_URL = "https://vikramonice.github.io/dml-el-rings-weather/"      # printed on every chart
+UA = {"User-Agent": "DML-EL-RINGS-meteogram (research; python-requests)"}
 
 # default sites (lat, lon); edit or add with --site
-# Requested by the RINGS Enderby team (26 Oct 2026); positions may be updated later - the slugs stay
+# Requested by the RINGS team (Enderby Land, then DML) (26 Oct 2026); positions may be updated later - the slugs stay
 # fixed so the history of a site continues when it moves.
 SITES = {
+    "PEA (Princess Elisabeth)": (-71.950, 23.347),  # added 26 Oct 2026; model ground 1276 m
+    "W1 (69.5S 31.0E)": (-69.5, 31.0),              # added 26 Oct 2026; floating ice shelf, model ground 34 m
     "S17 (skiway near Syowa)": (-69.03, 40.09),    # model ground 592 m
     "E1 (68.0S 45.0E)": (-68.0, 45.0),              # model ground ~500 m
     "E2 (67.5S 49.0E)": (-67.5, 49.0),              # ~410 m
     "E3 (66.0S 53.0E)": (-66.0, 53.0),              # ~360 m
     "E4 (66.5S 56.5E)": (-66.5, 56.5),              # moved 22 km west (inland) of the requested 66.5S 57E,
 }                                                   # whose grid cell is at the coast (60 m); here ~350 m
-SLUGS = {"S17 (skiway near Syowa)": "s17", "E1 (68.0S 45.0E)": "e1", "E2 (67.5S 49.0E)": "e2",
+SLUGS = {"PEA (Princess Elisabeth)": "pea", "W1 (69.5S 31.0E)": "w1", "S17 (skiway near Syowa)": "s17", "E1 (68.0S 45.0E)": "e1", "E2 (67.5S 49.0E)": "e2",
          "E3 (66.0S 53.0E)": "e3", "E4 (66.5S 56.5E)": "e4"}
 # fetched for the station check only (no meteogram): Syowa's grid cell is sea (0 m), the station on an island
 VERIFY_ONLY = {"Syowa": (-69.004, 39.581)}
@@ -549,7 +551,7 @@ def plot(site, p, rows, cycle, png):
     ax[2].plot(th, W, color="#1f8fff", lw=2.6, zorder=3)
     wtop = max(10, np.ceil(W.max() * 1.45 / 2) * 2)
     ax[2].set_ylim(0, wtop)
-    ax[2].set_ylabel("Wind speed (m/s)", color="#1f6fd0")
+    ax[2].set_ylabel("Wind at 10 m (m/s)", color="#1f6fd0")
     sec = ax[2].secondary_yaxis("right", functions=(lambda x: x * 1.94384, lambda x: x / 1.94384))
     sec.set_ylabel("knots")
     for lim, lab in [(10, "strong"), (15, "gale")]:
