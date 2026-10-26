@@ -1,0 +1,52 @@
+{
+ "box_km": [
+  1399.3810706537884,
+  1358.574685740603,
+  2228.3409119242506,
+  1847.3763258880404
+ ],
+ "aspect": 0.5896565983200115,
+ "sites": [
+  {
+   "name": "S17 (skiway near Syowa)",
+   "fx": 0.10115370782267742,
+   "fy": 0.17462282370468432,
+   "elev_m": 607,
+   "sea_km": 16.1
+  },
+  {
+   "name": "E1 (68.0S 45.0E)",
+   "fx": 0.37528053326734684,
+   "fy": 0.2800783645156423,
+   "elev_m": 626,
+   "sea_km": 22.4
+  },
+  {
+   "name": "E2 (67.5S 49.0E)",
+   "fx": 0.565487081748445,
+   "fy": 0.45707862629309115,
+   "elev_m": 531,
+   "sea_km": 11.4
+  },
+  {
+   "name": "E3 (66.0S 53.0E)",
+   "fx": 0.8600558574522593,
+   "fy": 0.5229511111572891,
+   "elev_m": 244,
+   "sea_km": 6.7
+  },
+  {
+   "name": "E4 (66.5S 56.5E)",
+   "fx": 0.9155568261392275,
+   "fy": 0.8567926245523934,
+   "elev_m": 417,
+   "sea_km": 12.7
+  }
+ ],
+ "elev_note": "Elevation: Bedmap3 surface (m above sea level). Distance to sea: shortest straight line to the nearest Bedmap3 ocean cell (approximate; the ice front moves).",
+ "north_deg": 47,
+ "size_km": [
+  829,
+  489
+ ]
+}
