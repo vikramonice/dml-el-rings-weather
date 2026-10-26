@@ -79,7 +79,8 @@ h1 { margin: 0; font-size: 1.7rem; font-weight: 600; letter-spacing: 0.01em; tex
 .gsub { margin-top: -6px; font-style: italic; }
 .headline { margin: 0; font-size: 1rem; font-weight: 500; }
 .disclaimer { margin: 0; font-size: 0.85rem; color: var(--muted); }
-.warnbox { margin: 10px 0 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.9rem; line-height: 1.4; }
+.warnbox { margin: 10px 0 14px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.9rem; line-height: 1.45; }
+.warnbox p { margin: 8px 0; }
 .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 10px; }
 .day { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px 8px; min-width: 0; }
 .day h3 { margin: 0 0 6px; font-size: 1rem; font-weight: 600; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
@@ -171,10 +172,16 @@ footer { font-size: 0.82rem; color: var(--muted); }
     </div>
   </header>
 
-  <p class="warnbox"><strong>Model output, not a forecast. These charts and notes are made automatically from the AMPS
-  weather model, with no forecaster involved. They were first set up for a ground traverse near Maitri in Dronning Maud Land.
-  They are not tuned for this region or for flying. The wind-aloft numbers are the model's, without interpretation.
-  For flight decisions use the official forecast and the station forecaster.</strong></p>
+  <div class="warnbox">
+    <p><strong>Meteograms: model data only.</strong> The charts show the AMPS weather model (Polar WRF, 8&nbsp;km) as it
+    comes, including the wind aloft, with no forecaster involved and no interpretation. They are not a forecast: for flight
+    decisions use the official forecast and the station forecaster.</p>
+    <p><strong>Field weather notes: rules from a handbook, written for one coast.</strong> The notes under the chart are
+    written automatically from the AMPS numbers, by fixed rules taken from the <i>International Antarctic Weather Forecasting
+    Handbook</i> (Turner &amp; Pendlebury 2004), from its sections for Maitri and Novolazarevskaya on the Dronning Maud Land
+    coast. Those rules suit that coast; they are not tuned for the rest of this region or for flying. This applies to the
+    notes only, not to the charts.</p>
+  </div>
 
   <div class="top">
     <div class="controls">
@@ -215,6 +222,19 @@ footer { font-size: 0.82rem; color: var(--muted); }
   <div class="empty" id="nochart" hidden>The chart for this older run was not kept (it predates this page); its numbers and field weather notes are below.</div>
   <div class="empty" id="empty" hidden>No forecast runs have been added yet. New runs appear here after each update.</div>
 
+  <div class="actions">
+    <button class="btn" id="dl-png" type="button">Download chart (PNG)</button>
+    <button class="btn" id="dl-guide" type="button" hidden>Download chart + notes (PNG)</button>
+    <button class="btn ghost" id="dl-csv" type="button">Download numbers (CSV)</button>
+    <a class="btn" id="open-png" href="#" target="_blank" rel="noopener" hidden>Open chart full size</a>
+    <button class="btn ghost" id="show-csv" type="button" aria-expanded="false" hidden>Show numbers (CSV)</button>
+    <span class="status" id="status" role="status"></span>
+  </div>
+  <div class="csvbox" id="csvbox" hidden>
+    <p class="disclaimer">Select all and copy, then paste into a spreadsheet. Saving files is not offered in this view; open the page signed in to claude.ai for download buttons.</p>
+    <textarea id="csvtext" readonly rows="10" spellcheck="false"></textarea>
+  </div>
+
   <section class="guidance" id="guidance" aria-labelledby="g-title" hidden>
     <div class="ghead"><h2 id="g-title">Field weather notes</h2><span class="made" id="g-made"></span></div>
     <p class="disclaimer gsub">the meteogram in words: hazards, wind, snow and cloud for each day</p>
@@ -242,18 +262,6 @@ footer { font-size: 0.82rem; color: var(--muted); }
     </details>
   </section>
 
-  <div class="actions">
-    <button class="btn" id="dl-png" type="button">Download chart (PNG)</button>
-    <button class="btn" id="dl-guide" type="button" hidden>Download chart + notes (PNG)</button>
-    <button class="btn ghost" id="dl-csv" type="button">Download numbers (CSV)</button>
-    <a class="btn" id="open-png" href="#" target="_blank" rel="noopener" hidden>Open chart full size</a>
-    <button class="btn ghost" id="show-csv" type="button" aria-expanded="false" hidden>Show numbers (CSV)</button>
-    <span class="status" id="status" role="status"></span>
-  </div>
-  <div class="csvbox" id="csvbox" hidden>
-    <p class="disclaimer">Select all and copy, then paste into a spreadsheet. Saving files is not offered in this view; open the page signed in to claude.ai for download buttons.</p>
-    <textarea id="csvtext" readonly rows="10" spellcheck="false"></textarea>
-  </div>
 
   <section class="guide" aria-label="How to read the meteogram">
     <div><h2>Temperature</h2><p>Red line: air temperature at 2&nbsp;m with daily highs and lows. Blue dashes: wind chill, what exposed skin feels. Symbols every 6&nbsp;h: clear, cloud or snow.</p></div>
@@ -439,7 +447,7 @@ footer { font-size: 0.82rem; color: var(--muted); }
     $("g-made").textContent = "written " + g.made + " UTC from this run";
     $("g-head").textContent = g.headline;
     $("g-site").textContent = g.site_note || ""; $("g-site").hidden = !g.site_note;
-    $("g-disc").textContent = (g.disclaimer || "").replace("AMPS model guidance written by fixed rules, not a forecaster's forecast.", 'Written automatically by fixed rules from the AMPS numbers, not by a forecaster.').replace('Check the latest run and look outside.', 'Use the newest run, and trust what you see on site over the model.');
+    $("g-disc").textContent = (g.disclaimer || "").replace("The rules were written for the MINIS ground traverse near Maitri (Dronning Maud Land). They are not tuned for this region or for flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for the rest of this region or for flying.").replace("The rules were written for the MINIS ground traverse in Dronning Maud Land and have not been adapted to Enderby Land or to flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for the rest of this region or for flying.").replace("AMPS model guidance written by fixed rules, not a forecaster's forecast.", 'Written automatically by fixed rules from the AMPS numbers, not by a forecaster.').replace('Check the latest run and look outside.', 'Use the newest run, and trust what you see on site over the model.');
     var days = $("g-days"); days.textContent = "";
     g.days.forEach(function (d) {
       var c = document.createElement("article"); c.className = "day";

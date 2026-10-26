@@ -274,9 +274,10 @@ def summarise(cycle, slug, start):
     note = SITE_NOTE["shelf"] if slug in SHELF else SITE_NOTE["katabatic"] if slug in KATABATIC else ""
     return dict(cycle=cycle, site=slug, made=start.strftime("%Y-%m-%d %H:%M"), headline=head, site_note=note,
                 days=days,
-                disclaimer="Written automatically by fixed rules from the AMPS numbers, not by a forecaster. The rules were "
-                           "written for the MINIS ground traverse near Maitri (Dronning Maud Land). They are not tuned for "
-                           "this region or for flying. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
+                disclaimer="Written automatically by fixed rules from the AMPS numbers, not by a forecaster. The rules are "
+                           "taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its "
+                           "sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for "
+                           "the rest of this region or for flying. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
                            "and what the station forecaster says over the model.")
 
 
