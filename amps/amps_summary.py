@@ -89,7 +89,7 @@ def hours(times):
 def parse(text):
     rows = list(csv.DictReader(io.StringIO(text)))
     A = {"time": np.array([dt.datetime.strptime(r["time"], "%Y-%m-%d %H:%M") for r in rows])}
-    for k in ("t2", "wchill", "wspd", "wdir", "mslp", "apcp", "rhi_low", "cld_depth"):
+    for k in ("t2", "wchill", "wspd", "wdir", "mslp", "apcp", "rhi_low", "cld_depth", "ws500", "wd500"):
         A[k] = np.array([float(r.get(k) or "nan") for r in rows])
     return A
 
@@ -131,6 +131,143 @@ def change12(A, i, key):
     """Change of A[key] over the 12 h ending at index i (nan if not available)."""
     j = np.flatnonzero(A["time"] == A["time"][i] - dt.timedelta(hours=12))
     return A[key][i] - A[key][j[0]] if j.size else np.nan
+
+
+# ---------------------------------------------------------------- DML/EL: nearest handbook section per site
+# International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), printed pages:
+#   7.5.9  Inland of Syowa (Asuka)  346-350      7.5.10 Syowa Station  350-354
+#   7.6.1  Molodezhnaya Station      354-362      7.6.2  Mount King      362-366
+SECTION = {"pea": "asuka", "w1": "syowa", "s17": "syowa", "e1": "molodezhnaya", "e2": "molodezhnaya",
+           "e3": "mountking", "e4": "mountking"}
+SITE_NOTE_EL = {
+    "pea": "Nearest handbook station: Asuka (Sør Rondane, 930 m, about 30 km from PEA). A katabatic wind zone: "
+           "the annual mean wind there exceeds 12 m/s (23 kt), and strong winds often give deep blowing snow and "
+           "poor visibility (handbook 7.5.9).",
+    "w1": "Nearest handbook station: Syowa, about 350 km east; W1 lies between Asuka and Syowa, so these rules are "
+          "an approximation. At Syowa, blizzards come with north-east to east-north-east wind as a low passes or "
+          "stops nearby; pure easterly is the katabatic, about 7-10 m/s in the morning (handbook 7.5.10).",
+    "s17": "Nearest handbook station: Syowa, about 20 km. Blizzards come with north-east to east-north-east wind as "
+           "a low passes or stops nearby; pure easterly is the katabatic, about 7-10 m/s in the morning and gone "
+           "by the afternoon. When the katabatic reaches the coast, visibility can fall from 1 km to 100 m within "
+           "minutes (handbook 7.5.10).",
+    "e1": "Nearest handbook station: Molodezhnaya, about 40 km. East and south-east winds make up 85% of the "
+          "record; the south-east wind is the katabatic, in summer mainly at night. The strongest winds come in "
+          "the rear of a cyclone, when katabatic and cyclonic winds line up (handbook 7.6.1).",
+    "e2": "Nearest handbook station: Molodezhnaya, about 150 km west. East and south-east winds make up 85% of "
+          "the record; the south-east wind is the katabatic, in summer mainly at night. The strongest winds come "
+          "in the rear of a cyclone (handbook 7.6.1).",
+    "e3": "Nearest handbook station: Mount King (summer camp 1975-80, about 120 km south-west), from four summers "
+          "of notes. The usual wind is easterly; most bad weather arrived from the north-west; moist north-easterly "
+          "flow brings extensive low cloud; long fine spells came under a ridge of the polar high (handbook 7.6.2).",
+    "e4": "Nearest handbook station: Mount King (summer camp 1975-80, about 170 km west), from four summers of "
+          "notes. The usual wind is easterly; most bad weather arrived from the north-west; moist north-easterly "
+          "flow brings extensive low cloud (handbook 7.6.2).",
+}
+
+
+def between(d, lo, hi):
+    """Direction d (deg) in [lo, hi), wrapping through north when lo > hi."""
+    d = np.asarray(d) % 360
+    return (d >= lo) & (d < hi) if lo <= hi else (d >= lo) | (d < hi)
+
+
+def regional(slug, A, idx, ta, w, d, T, rh, dep, pr, flags):
+    """Rules from the nearest handbook section (DML/EL copy). Thresholds marked 'ours' in RULES.md."""
+    sec, out = SECTION.get(slug), []
+    if not sec:
+        return out
+    hr = np.array([t.hour for t in ta])
+    w5 = A.get("ws500", np.full(len(A["time"]), np.nan))[idx]
+    d5 = A.get("wd500", np.full(len(A["time"]), np.nan))[idx]
+    dp3 = np.array([A["mslp"][i] - A["mslp"][i - 1] if i > 0 else np.nan for i in idx])     # 3-h change
+    if sec == "syowa":
+        ne = between(d, 22.5, 78.75) & (w >= 10)
+        if ne.any():
+            t_ = [t for t, x in zip(ta, ne) if x]
+            fast = ne & (dp3 <= -3)
+            txt = ("North-east to east-north-east wind of %d kt %s: at Syowa, blizzards come only with wind from "
+                   "this direction." % (kn(np.nanmax(w[ne])), hours(t_)))
+            lev = "watch"
+            if fast.any():
+                txt += (" Pressure is falling %.0f hPa in 3 h at the same time; the handbook ties fast falls "
+                        "(3-5 hPa per hour) to blizzards developing." % -np.nanmin(dp3[fast]))
+                lev = "warn"
+            out.append(dict(kind="Handbook", level=lev, text=txt)); flags.append("blizzard direction")
+        kat = between(d, 78.75, 112.5) & (w >= 7) & (hr >= 3) & (hr <= 9)
+        if kat.any():
+            out.append(dict(kind="Handbook", level="ok",
+                            text="Easterly wind in the morning %s: the katabatic, which at Syowa reaches about "
+                                 "10 m/s and dies off by the afternoon." % hours([t for t, x in zip(ta, kat) if x])))
+    if sec == "molodezhnaya":
+        kat = between(d, 112.5, 157.5) & (w >= 7) & ((hr >= 21) | (hr <= 3))
+        if kat.any():
+            out.append(dict(kind="Handbook", level="watch" if np.nanmax(w[kat]) >= 10 else "ok",
+                            text="South-east wind at night %s: the katabatic. In summer it blows mainly between 01 "
+                                 "and 05 local time, and its gusts can reach 25-30 m/s, far above the mean wind."
+                                 % hours([t for t, x in zip(ta, kat) if x])))
+        rise = np.array([change12(A, i, "mslp") for i in idx])
+        rear = between(d, 67.5, 157.5) & (w >= 15) & (rise >= 3)
+        if rear.any():
+            out.append(dict(kind="Handbook", level="warn",
+                            text="Strong east to south-east wind while pressure rises after a low %s: the strongest "
+                                 "winds come in the rear of a cyclone, when katabatic and cyclonic winds line up; "
+                                 "with loose snow, blowing snow." % hours([t for t, x in zip(ta, rear) if x])))
+            flags.append("rear of a low")
+        thin = (rh >= 95) & ~(dep >= 1500) & (hr >= 6) & (hr <= 15) & (w < 10)
+        if thin.any():
+            out.append(dict(kind="Handbook", level="watch",
+                            text="Thin low cloud over the snow by day %s: the handbook warns of white-out in sunny "
+                                 "weather under thin, broken stratus; flights over the ice sheet are best planned with "
+                                 "a cloud-free forecast." % hours([t for t, x in zip(ta, thin) if x])))
+            flags.append("white-out (thin cloud)")
+    if sec == "mountking":
+        ne = between(d, 22.5, 67.5) & (w >= 5)
+        if ne.any():
+            out.append(dict(kind="Handbook", level="watch",
+                            text="North-easterly flow %s: at Mount King these airstreams were almost always moist, "
+                                 "with extensive low cloud." % hours([t for t, x in zip(ta, ne) if x])))
+            flags.append("moist north-easterly")
+        nw = between(d5, 247.5, 337.5) & (w5 >= 10)
+        if nw.any() and ((rh >= 95).any() or np.nansum(pr) >= 0.2):
+            out.append(dict(kind="Handbook", level="watch",
+                            text="Upper (500 hPa) north-westerly to westerly flow %s, with cloud or snow: most "
+                                 "deteriorations at Mount King arrived from the north-west in this pattern, even "
+                                 "with an easterly surface wind." % hours([t for t, x in zip(ta, nw) if x])))
+            flags.append("weather from the north-west")
+        if not ne.any() and np.isfinite(d5).all() and between(d5, 90, 270).all() and np.mean(rh >= 95) < 0.25:
+            out.append(dict(kind="Handbook", level="ok",
+                            text="No northerly component in the upper wind all day: the only long clear spells at "
+                                 "Mount King came in this pattern."))
+    if sec == "syowa":
+        north = (between(d5, 315, 45)) & (w5 >= 10)
+        south = between(d5, 135, 225) & (w5 >= 10)
+        if north.any():
+            out.append(dict(kind="Handbook", level="watch",
+                            text="Upper (500 hPa) wind from the north, up to %d kt, %s: at Syowa, upper northerlies of "
+                                 "10 m/s or more bring bad weather." % (kn(np.nanmax(w5[north])), hours([t for t, x in zip(ta, north) if x]))))
+            flags.append("upper northerly")
+        elif south.any() and not north.any():
+            out.append(dict(kind="Handbook", level="ok",
+                            text="Upper (500 hPa) wind from the south %s: at Syowa, upper southerlies bring good "
+                                 "weather." % hours([t for t, x in zip(ta, south) if x])))
+        up = np.array([change12(A, i, "ws500") if "ws500" in A else np.nan for i in idx])
+        nws = between(d5, 270, 330) & (w5 >= 15) & (up >= 5)
+        if nws.any():
+            out.append(dict(kind="Handbook", level="watch",
+                            text="Upper (500 hPa) north-westerly strengthening to %d kt %s: the handbook warns that a "
+                                 "low may be approaching, which can deepen into a major blizzard."
+                                 % (kn(np.nanmax(w5[nws])), hours([t for t, x in zip(ta, nws) if x]))))
+            flags.append("low approaching")
+    if sec in ("syowa", "molodezhnaya"):
+        jump = np.array([A["t2"][i] - A["t2"][i - 2] if i > 1 else np.nan for i in idx])          # 6-h warming
+        if np.nanmax(jump) >= 10:
+            i = int(np.nanargmax(jump))
+            out.append(dict(kind="Handbook", level="watch",
+                            text="Sudden warming of %.0f °C in 6 h to %02d UTC: the handbook links a jump of about 10 °C "
+                                 "in 3-4 h to the surface inversion breaking up, often as a blizzard develops."
+                                 % (jump[i], ta[i].hour or 24)))
+            flags.append("sudden warming")
+    return out
 
 
 def day_summary(day, A, P, prev_label, lead_day, slug):
@@ -179,6 +316,9 @@ def day_summary(day, A, P, prev_label, lead_day, slug):
                                "to 25-30 kt, with equally sudden lulls." % hours(kat)))
     if PATTERN and not cyc and not kat and (w >= 5).any() and (d[k] >= 300 or d[k] <= 30):
         items.append(dict(kind="Pattern", level="ok", text="Northerly: a ridge passing, usually light winds."))
+
+    # --- nearest handbook section (DML/EL)
+    items += regional(slug, A, idx, ta, w, d, T, rh, dep, pr, flags)
 
     # --- snow
     tot = float(np.nansum(pr))
@@ -271,13 +411,14 @@ def summarise(cycle, slug, start):
         d += dt.timedelta(days=1)
     watch = ["%s: %s" % (x["label"][:3], ", ".join(x["flags"])) for x in days if x["flags"]]
     head = ("Watch: " + "; ".join(watch) + ".") if watch else "No hazards flagged by AMPS."
-    note = SITE_NOTE["shelf"] if slug in SHELF else SITE_NOTE["katabatic"] if slug in KATABATIC else ""
+    note = SITE_NOTE_EL.get(slug, "")
     return dict(cycle=cycle, site=slug, made=start.strftime("%Y-%m-%d %H:%M"), headline=head, site_note=note,
                 days=days,
                 disclaimer="Written automatically by fixed rules from the AMPS numbers, not by a forecaster. The rules are "
-                           "taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its "
-                           "sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for "
-                           "the rest of this region or for flying. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
+                           "taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004): general "
+                           "thresholds, plus each site's nearest station section (Asuka, Syowa, Molodezhnaya or Mount King). "
+                           "The handbook describes those stations up to 2004 (Molodezhnaya and Mount King were already closed); "
+                           "it is a guide for travel on the ice, not an aviation forecast. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
                            "and what the station forecaster says over the model.")
 
 

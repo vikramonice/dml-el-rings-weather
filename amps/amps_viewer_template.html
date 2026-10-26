@@ -176,11 +176,6 @@ footer { font-size: 0.82rem; color: var(--muted); }
     <p><strong>Meteograms: model data only.</strong> The charts show the AMPS weather model (Polar WRF, 8&nbsp;km) as it
     comes, including the wind aloft, with no forecaster involved and no interpretation. They are not a forecast: for flight
     decisions use the official forecast and the station forecaster.</p>
-    <p><strong>Field weather notes: rules from a handbook, written for one coast.</strong> The notes under the chart are
-    written automatically from the AMPS numbers, by fixed rules taken from the <i>International Antarctic Weather Forecasting
-    Handbook</i> (Turner &amp; Pendlebury 2004), from its sections for Maitri and Novolazarevskaya on the Dronning Maud Land
-    coast. Those rules suit that coast; they are not tuned for the rest of this region or for flying. This applies to the
-    notes only, not to the charts.</p>
   </div>
 
   <div class="top">
@@ -235,6 +230,10 @@ footer { font-size: 0.82rem; color: var(--muted); }
     <textarea id="csvtext" readonly rows="10" spellcheck="false"></textarea>
   </div>
 
+  <div class="warnbox notesnote" id="g-notice" hidden>
+    <p><strong>About the field weather notes below.</strong> <span id="g-disc"></span></p>
+    <p><a class="mb" href="https://github.com/vikramonice/dml-el-rings-weather/blob/main/RULES.md" target="_blank" rel="noopener">How these notes are written: every rule, with sources &#8599;</a></p>
+  </div>
   <section class="guidance" id="guidance" aria-labelledby="g-title" hidden>
     <div class="ghead"><h2 id="g-title">Field weather notes</h2><span class="made" id="g-made"></span></div>
     <p class="disclaimer gsub">the meteogram in words: hazards, wind, snow and cloud for each day</p>
@@ -244,8 +243,6 @@ footer { font-size: 0.82rem; color: var(--muted); }
       <summary>Day by day <span class="hint">wind, snow, cloud, temperature, pressure for each day</span></summary>
       <div class="foldbody"><div class="days" id="g-days"></div></div>
     </details>
-    <p class="disclaimer" id="g-disc"></p>
-    <p class="disclaimer"><a class="mb" href="https://github.com/vikramonice/dml-el-rings-weather/blob/main/RULES.md" target="_blank" rel="noopener">How these notes are written: every rule, with sources &#8599;</a></p>
   </section>
 
   <section class="verify" id="verify-box" aria-labelledby="v-title" hidden>
@@ -268,7 +265,7 @@ footer { font-size: 0.82rem; color: var(--muted); }
     <div><h2>Cloud and snow</h2><p>Grey: layers where the air is saturated over ice, so cloud is likely, by altitude (right scale). Orange ticks: model cloud base. Blue bars: snowfall as mm of water per 3&nbsp;h (about 1&nbsp;cm of fresh snow per mm).</p></div>
     <div><h2>Wind aloft</h2><p>Bottom panel: AMPS wind at 850, 700 and 500&nbsp;hPa every 6&nbsp;h, arrow for direction (where it blows to) and number for speed in knots; the label gives the model's height of each level above sea level. Shown as the model gives it, without interpretation.</p></div>
     <div><h2>Wind</h2><p>Speed at 10&nbsp;m in m/s (left) and knots (right). Arrows point where the wind blows to; letters give where it comes from. Dashed lines mark strong (10&nbsp;m/s) and gale (15&nbsp;m/s). AMPS publishes no gusts.</p></div>
-    <div><h2>Field weather notes</h2><p>The meteogram in words, written automatically by fixed rules from the AMPS numbers, not by a forecaster. The thresholds come from the <i>International Antarctic Weather Forecasting Handbook</i> (Turner &amp; Pendlebury 2004) and were set for a ground traverse in Dronning Maud Land; the rules specific to that region are switched off here. <b>Not tuned for this region or for flying.</b> Amber: drifting snow (mean wind 20&nbsp;kt or more, 14&nbsp;kt on fresh snow), snow of 0.5&nbsp;mm or more, thick low cloud (poor contrast and horizon), or pressure falling fast. Red: blowing snow (35&nbsp;kt or more) or whiteout risk (thick cloud with snow or drift). &ldquo;Last run&rdquo; compares the day with the previous AMPS run: a hazard seen in both runs is more trustworthy than one that just appeared.</p></div>
+    <div><h2>Field weather notes</h2><p>The meteogram in words, written automatically by fixed rules from the AMPS numbers, not by a forecaster. Rules come from the <i>International Antarctic Weather Forecasting Handbook</i> (Turner &amp; Pendlebury 2004): general thresholds, plus each site's nearest station section (Asuka for PEA, Syowa for W1 and S17, Molodezhnaya for E1 and E2, Mount King for E3 and E4), shown as &ldquo;Handbook&rdquo; lines. <b>A guide for travel on the ice, not an aviation forecast.</b> Amber: drifting snow (mean wind 20&nbsp;kt or more, 14&nbsp;kt on fresh snow), snow of 0.5&nbsp;mm or more, thick low cloud (poor contrast and horizon), or pressure falling fast. Red: blowing snow (35&nbsp;kt or more) or whiteout risk (thick cloud with snow or drift). &ldquo;Last run&rdquo; compares the day with the previous AMPS run: a hazard seen in both runs is more trustworthy than one that just appeared.</p></div>
     <div><h2>AMPS against the station reports</h2><p>Every update compares what this page showed at Syowa's grid point with the 3-hourly Syowa reports, and keeps the Molodezhnaya reports alongside. The bias tells you how to read the meteogram: for example, if AMPS has run 2&nbsp;°C too cold at night, expect nights about 2&nbsp;°C warmer than shown. It builds up through the season.</p></div>
     <div><h2>Pressure</h2><p>Sea-level pressure. Red shading marks a fall of 4&nbsp;hPa or more in 12&nbsp;h, often the first sign of a storm or rising wind.</p></div>
   </section>
@@ -287,7 +284,7 @@ footer { font-size: 0.82rem; color: var(--muted); }
           <span class="when">every 30 min, 09:00&ndash;12:00 and 21:00&ndash;00:30 UTC; new runs appear within about half an hour</span></div></li>
         <li><span class="ic" aria-hidden="true">&#128200;</span><div><h3>3. Charts and field weather notes</h3>
           <p>For each site it draws the meteogram (temperature, cloud, snow, wind, pressure) and writes the field weather notes (the meteogram in words) by fixed rules
-          from the <i>Antarctic Weather Forecasting Handbook</i>: drifting snow, whiteout risk, falling pressure (set for a ground traverse near Maitri; not tuned for this region or for flying).
+          from the <i>Antarctic Weather Forecasting Handbook</i>: drifting snow, whiteout risk, falling pressure, and for each site the wind patterns of its nearest station section (Asuka, Syowa, Molodezhnaya or Mount King).
           It also compares each day with the previous run: a hazard seen in both runs is more trustworthy.
           <a class="mb" href="https://github.com/vikramonice/dml-el-rings-weather/blob/main/RULES.md" target="_blank" rel="noopener">Every rule, its source and a worked example &#8599;</a></p></div></li>
         <li><span class="ic" aria-hidden="true">&#128269;</span><div><h3>4. A check against real weather</h3>
@@ -443,11 +440,12 @@ footer { font-size: 0.82rem; color: var(--muted); }
   function renderGuidance(g) {
     var box = $("guidance");
     box.hidden = !g;
+    $("g-notice").hidden = !g;
     if (!g) return;
     $("g-made").textContent = "written " + g.made + " UTC from this run";
     $("g-head").textContent = g.headline;
     $("g-site").textContent = g.site_note || ""; $("g-site").hidden = !g.site_note;
-    $("g-disc").textContent = (g.disclaimer || "").replace("The rules were written for the MINIS ground traverse near Maitri (Dronning Maud Land). They are not tuned for this region or for flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for the rest of this region or for flying.").replace("The rules were written for the MINIS ground traverse in Dronning Maud Land and have not been adapted to Enderby Land or to flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004), its sections for Maitri and Novolazarevskaya on the Dronning Maud Land coast; they are not tuned for the rest of this region or for flying.").replace("AMPS model guidance written by fixed rules, not a forecaster's forecast.", 'Written automatically by fixed rules from the AMPS numbers, not by a forecaster.').replace('Check the latest run and look outside.', 'Use the newest run, and trust what you see on site over the model.');
+    $("g-disc").textContent = (g.disclaimer || "").replace("The rules were written for the MINIS ground traverse near Maitri (Dronning Maud Land). They are not tuned for this region or for flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004): general thresholds, plus each site's nearest station section (Asuka, Syowa, Molodezhnaya or Mount King). The handbook describes those stations up to 2004 (Molodezhnaya and Mount King were already closed); it is a guide for travel on the ice, not an aviation forecast.").replace("The rules were written for the MINIS ground traverse in Dronning Maud Land and have not been adapted to Enderby Land or to flying.", "The rules are taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004): general thresholds, plus each site's nearest station section (Asuka, Syowa, Molodezhnaya or Mount King). The handbook describes those stations up to 2004 (Molodezhnaya and Mount King were already closed); it is a guide for travel on the ice, not an aviation forecast.").replace("AMPS model guidance written by fixed rules, not a forecaster's forecast.", 'Written automatically by fixed rules from the AMPS numbers, not by a forecaster.').replace('Check the latest run and look outside.', 'Use the newest run, and trust what you see on site over the model.');
     var days = $("g-days"); days.textContent = "";
     g.days.forEach(function (d) {
       var c = document.createElement("article"); c.className = "day";

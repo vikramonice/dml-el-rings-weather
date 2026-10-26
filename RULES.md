@@ -1,13 +1,60 @@
 # How the field weather notes are written
 
-> **DML/EL RINGS copy.** This page was written for the MINIS ground traverse in Dronning Maud Land
-> and is kept unchanged as the record of the rules. On the
-> [DML/EL RINGS page](https://vikramonice.github.io/dml-el-rings-weather/) the **weather-pattern
-> rules** (wind-direction patterns and the site notes from the Maitri / Dakshin Gangotri section)
-> are **switched off**; the general thresholds (drifting and blowing snow, snowfall, low cloud and
-> contrast, pressure changes) are used as written. None of it is tuned for this region or for
-> flying. The wind-aloft panel has no rules: it shows the AMPS numbers only. The station check uses
-> Syowa (89532) and Molodezhnaya (89542) instead of Maitri and Novolazarevskaya.
+> **DML/EL RINGS page.** The [DML/EL RINGS page](https://vikramonice.github.io/dml-el-rings-weather/)
+> uses the **general thresholds** described further down (drifting and blowing snow, snowfall, low
+> cloud and contrast, pressure changes), plus **rules from the nearest station section of the
+> handbook** for each site (next section). The Maitri / Dakshin Gangotri pattern rules from the
+> MINIS page are switched off here. The meteograms themselves have no rules: they are AMPS model
+> data, and the wind-aloft panel shows the numbers only. The station check uses Syowa (89532) and
+> Molodezhnaya (89542).
+
+## DML/EL RINGS: rules from the nearest station section
+
+Source: *International Antarctic Weather Forecasting Handbook* (Turner & Pendlebury, eds., British
+Antarctic Survey, 2004; open access at
+[NORA](https://nora.nerc.ac.uk/id/eprint/17324/1/handbook_16june04.pdf)). Printed page numbers.
+
+| Site | Section used | Distance | Pages |
+|---|---|---|---|
+| PEA | 7.5.9 Inland of Syowa: Asuka (Sør Rondane, 930 m) | ~30 km | 346-350 |
+| W1 | 7.5.10 Syowa Station (W1 lies between Asuka and Syowa: an approximation) | ~350 km | 350-354 |
+| S17 | 7.5.10 Syowa Station | ~20 km | 350-354 |
+| E1, E2 | 7.6.1 Molodezhnaya Station | ~40 km, ~150 km | 354-362 |
+| E3, E4 | 7.6.2 Mount King (summer camp 1975-80; four summers of notes) | ~120 km, ~170 km | 362-366 |
+
+Limits: the handbook describes these stations up to 2004 (Molodezhnaya and Mount King were already
+closed). It is climate and forecasting experience for the stations, not an aviation forecast, and
+none of it was written for the exact sites here.
+
+Each rule below is a note that appears only when the AMPS numbers meet the condition. "Ours" marks a
+threshold we chose to turn the handbook's description into a test on 3-hourly model values.
+
+| Section | Note appears when (AMPS) | What the handbook says | Ours |
+|---|---|---|---|
+| Syowa | surface wind from 22.5-78.75° (NE-ENE) at 10 m/s or more | blizzards occur only with wind from the NE or ENE (p. 352) | 10 m/s |
+| Syowa | same, with pressure falling 3 hPa or more in 3 h: shown in red | falls of 3-5 hPa per hour may come with blizzards developing (p. 352) | 3 hPa / 3 h (AMPS is 3-hourly) |
+| Syowa | easterly (78.75-112.5°) at 7 m/s or more, 03-09 UTC | katabatic winds reach 10 m/s or more in the morning, cease in the afternoon (p. 352) | 7 m/s, the time window |
+| Syowa | 500 hPa wind from 315-45° (north) at 10 m/s or more | upper northerlies of 10 m/s or more bring bad weather; southerlies good weather (p. 352) | the sector |
+| Syowa | 500 hPa wind from 270-330° at 15 m/s or more, up 5 m/s in 12 h | an increasing 500 hPa wind from about 300° calls for caution: a low approaching, a major blizzard may develop (pp. 352-353) | 15 m/s, +5 m/s |
+| Syowa, Molodezhnaya | temperature up 10 °C or more within 6 h | a rise of about 10 °C in 3-4 h, from the inversion breaking up, may come with a blizzard (Syowa, p. 354) | 6 h (3-hourly data) |
+| Molodezhnaya | south-easterly (112.5-157.5°) at 7 m/s or more, 21-03 UTC | the SE wind (~140°) is the katabatic; in summer mainly 01-05 local time, gusts 25-30 m/s (p. 358) | 7 m/s, the window |
+| Molodezhnaya | E-SE wind at 15 m/s or more while pressure has risen 3 hPa in 12 h | the strongest winds come in the rear of a cyclone, when katabatic and cyclonic winds coincide (p. 358) | 15 m/s, 3 hPa |
+| Molodezhnaya | thin low cloud (saturated below 1.5 km, layer under 1.5 km deep), 06-15 UTC, wind under 10 m/s | white-out in sunny weather with thin, broken stratus; flights over the dome best with a cloud-free forecast (p. 360) | the cloud test, the window |
+| Mount King | surface wind from 22.5-67.5° (NE) at 5 m/s or more | north-easterly airstreams are almost invariably very moist, with extensive low cloud (p. 364) | 5 m/s |
+| Mount King | 500 hPa wind from 247.5-337.5° at 10 m/s or more, with cloud or snow that day | most deteriorations came from the north-west with upper north-westerly flow, even with easterly surface wind (pp. 364-365) | the sector, 10 m/s |
+| Mount King | no northerly component in the 500 hPa wind all day, little low cloud, no NE flow | the only substantial nil-cloud period came with no northerly component in the upper winds (p. 364) | the cloud limit |
+
+Site notes (one per site, shown above the day-by-day notes) summarise the section: PEA, katabatic
+zone with annual mean wind over 12 m/s and frequent deep blowing snow (Asuka, p. 348); S17 and W1,
+Syowa's blizzard direction and morning katabatic, and the sudden loss of visibility when the
+katabatic reaches the coast (p. 353); E1 and E2, Molodezhnaya's E/SE winds and night katabatic;
+E3 and E4, Mount King's easterly wind, weather from the north-west and moist north-easterlies.
+
+Code: `regional()` in [`amps/amps_summary.py`](amps/amps_summary.py).
+
+---
+
+*The rest of this page is the original MINIS rule record; its general thresholds also apply here.*
 
 The **field weather notes** on the [MINIS Meteograms page](https://vikramonice.github.io/minis-weather/)
 are the meteogram in words. They are written **automatically, by fixed rules**, from the numbers of
