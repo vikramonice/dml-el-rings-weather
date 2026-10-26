@@ -140,28 +140,19 @@ def change12(A, i, key):
 SECTION = {"pea": "asuka", "w1": "syowa", "s17": "syowa", "e1": "molodezhnaya", "e2": "molodezhnaya",
            "e3": "mountking", "e4": "mountking"}
 SITE_NOTE_EL = {
-    "pea": "Nearest handbook station: Asuka (Sør Rondane, 930 m, about 30 km from PEA). A katabatic wind zone: "
-           "the annual mean wind there exceeds 12 m/s (23 kt), and strong winds often give deep blowing snow and "
-           "poor visibility (handbook 7.5.9).",
-    "w1": "Nearest handbook station: Syowa, about 350 km east; W1 lies between Asuka and Syowa, so these rules are "
-          "an approximation. At Syowa, blizzards come with north-east to east-north-east wind as a low passes or "
-          "stops nearby; pure easterly is the katabatic, about 7-10 m/s in the morning (handbook 7.5.10).",
-    "s17": "Nearest handbook station: Syowa, about 20 km. Blizzards come with north-east to east-north-east wind as "
-           "a low passes or stops nearby; pure easterly is the katabatic, about 7-10 m/s in the morning and gone "
-           "by the afternoon. When the katabatic reaches the coast, visibility can fall from 1 km to 100 m within "
-           "minutes (handbook 7.5.10).",
-    "e1": "Nearest handbook station: Molodezhnaya, about 40 km. East and south-east winds make up 85% of the "
-          "record; the south-east wind is the katabatic, in summer mainly at night. The strongest winds come in "
-          "the rear of a cyclone, when katabatic and cyclonic winds line up (handbook 7.6.1).",
-    "e2": "Nearest handbook station: Molodezhnaya, about 150 km west. East and south-east winds make up 85% of "
-          "the record; the south-east wind is the katabatic, in summer mainly at night. The strongest winds come "
-          "in the rear of a cyclone (handbook 7.6.1).",
-    "e3": "Nearest handbook station: Mount King (summer camp 1975-80, about 120 km south-west), from four summers "
-          "of notes. The usual wind is easterly; most bad weather arrived from the north-west; moist north-easterly "
-          "flow brings extensive low cloud; long fine spells came under a ridge of the polar high (handbook 7.6.2).",
-    "e4": "Nearest handbook station: Mount King (summer camp 1975-80, about 170 km west), from four summers of "
-          "notes. The usual wind is easterly; most bad weather arrived from the north-west; moist north-easterly "
-          "flow brings extensive low cloud (handbook 7.6.2).",
+    "pea": "Nearest handbook station: Asuka (~30 km). Katabatic zone: mean wind over 12 m/s, often deep blowing snow.",
+    "w1": "Nearest handbook station: Syowa (~350 km; approximate). Blizzards come with NE-ENE wind; easterly is the "
+          "morning katabatic.",
+    "s17": "Nearest handbook station: Syowa (~20 km). Blizzards come with NE-ENE wind; easterly is the morning katabatic. "
+           "Visibility can drop to 100 m within minutes when it reaches the coast.",
+    "e1": "Nearest handbook station: Molodezhnaya (~40 km). Mostly E-SE wind; SE is the night katabatic; strongest winds "
+          "behind a low.",
+    "e2": "Nearest handbook station: Molodezhnaya (~150 km). Mostly E-SE wind; SE is the night katabatic; strongest winds "
+          "behind a low.",
+    "e3": "Nearest handbook station: Mount King (~120 km; summers 1975-80). Mostly easterly; bad weather from the NW; "
+          "NE flow brings low cloud.",
+    "e4": "Nearest handbook station: Mount King (~170 km; summers 1975-80). Mostly easterly; bad weather from the NW; "
+          "NE flow brings low cloud.",
 }
 
 
@@ -414,12 +405,7 @@ def summarise(cycle, slug, start):
     note = SITE_NOTE_EL.get(slug, "")
     return dict(cycle=cycle, site=slug, made=start.strftime("%Y-%m-%d %H:%M"), headline=head, site_note=note,
                 days=days,
-                disclaimer="Written automatically by fixed rules from the AMPS numbers, not by a forecaster. The rules are "
-                           "taken from the International Antarctic Weather Forecasting Handbook (Turner & Pendlebury 2004): general "
-                           "thresholds, plus each site's nearest station section (Asuka, Syowa, Molodezhnaya or Mount King). "
-                           "The handbook describes those stations up to 2004 (Molodezhnaya and Mount King were already closed); "
-                           "it is a guide for travel on the ice, not an aviation forecast. Mean wind only: gusts are stronger. Use the newest run, and trust what you see "
-                           "and what the station forecaster says over the model.")
+                disclaimer="Written automatically from AMPS by handbook rules (nearest station per site). Mean wind only; gusts are stronger.")
 
 
 def main():
